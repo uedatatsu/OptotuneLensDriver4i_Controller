@@ -156,6 +156,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="04-Operation_Mode.cpp" />
     <ClCompile Include="CRC-16-IBM-Calculation.cpp" />
     <ClCompile Include="01-Firmware _Commands_and_Properties.cpp" />
     <ClCompile Include="03-Lens_Commands_and_Properties.cpp" />

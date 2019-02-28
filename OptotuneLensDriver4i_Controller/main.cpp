@@ -12,11 +12,13 @@ int main()
 	lensDriver optlens(comNum,baudrate);
 
 	optlens.Handshake();
-
-	optlens.SetCurrent(250);
-
+	optlens.ChangeToCurrentMode();
+	optlens.SetCurrent(100);
+	optlens.ReadCurrentlyActiveMode();
 	std::cout<<"Current: "<<optlens.GetCurrent()<<std::endl;
 	//optlens.getCurrent();
 	std::cout << optlens.GetMaxOutputCurrent() << std::endl;
-
+	optlens.ChangeToSinusoidalSignal();
+	optlens.SetSignalGeneratorFrequency(17);
+	optlens.GetSignalGeneratorFrequency();
 }

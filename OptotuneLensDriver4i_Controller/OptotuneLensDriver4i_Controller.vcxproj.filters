@@ -44,5 +44,8 @@
     <ClCompile Include="03-Lens_Commands_and_Properties.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="04-Operation_Mode.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
