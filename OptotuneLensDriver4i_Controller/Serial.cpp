@@ -65,6 +65,7 @@ lensDriver::lensDriver(int comNum, int bitRate)
 
 lensDriver::~lensDriver()
 {
+	ChangeToCurrentMode();
 	SetCurrent(0);
 	Sleep(waitTime);
 	CloseHandle(commHandle);

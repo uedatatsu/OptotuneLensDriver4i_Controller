@@ -12,6 +12,8 @@ static constexpr int baudrate = 115200;	//ボーレート
 static constexpr int waitTime = 100;
 static constexpr int maxFrequency = 500;
 
+#define COUNTOF(array) (sizeof(array) / sizeof(array[0]))
+
 class Serial;
 
 class lensDriver {
@@ -94,7 +96,11 @@ public:
 	int ReadCurrentlyActiveMode();
 	int ChangeToAnalogMode();
 
-	
+	//06-Advanced_Commands.cpp
+	int GPIOToogle();
+	int SetLensDriverToDFUMode();
+	int Nodemonstration();
+	double InterpoaltionCommand(double current, double temperature);
 
 };
 

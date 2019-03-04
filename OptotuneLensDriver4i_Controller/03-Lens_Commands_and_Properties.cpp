@@ -3,7 +3,7 @@
 
 
 int lensDriver::SetCurrent(double inputCurrent) {
-		auto crc16 = new crc16ibm();
+	auto crc16 = new crc16ibm();
 	unsigned char SendCmd[6] = { 'A','w' };
 	double maxCurrent = GetMaxOutputCurrent();
 	char buf[200];
@@ -37,7 +37,7 @@ int lensDriver::SetCurrent(double inputCurrent) {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = get_high8(cs);
 
-	write((char *)SendCmd, 6);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
 	std::cout << "Set Current : " << inputCurrent << " [mA]" << std::endl;
 
@@ -57,7 +57,7 @@ double lensDriver::GetCurrent() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 6);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 6);
 
@@ -90,7 +90,7 @@ double lensDriver::GetSignalGeneratorUpperCurrentLimit() {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -129,7 +129,7 @@ int lensDriver::SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit) {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
 	//std::cout << "Set Current" << std::endl;
 
@@ -147,7 +147,7 @@ double lensDriver::GetSignalGeneratorLowerCurrentLimit() {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -182,7 +182,7 @@ int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
 	//std::cout << "Set Current" << std::endl;
 
@@ -199,7 +199,7 @@ double lensDriver::GetSignalGeneratorFrequency() {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -246,7 +246,7 @@ int lensDriver::SetSignalGeneratorFrequency(double frequency) {
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
-	write((char *)SendCmd, 10);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
 
 	return 0;
@@ -265,7 +265,7 @@ double lensDriver::GetMaxOutputCurrent() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -280,5 +280,64 @@ double lensDriver::GetMaxOutputCurrent() {
 	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
 	return value / 100;
+
+}
+
+double	lensDriver::GetFocalPower() {
+	auto crc16 = new crc16ibm();
+
+	unsigned char SendCmd[10] = { 'P','r','D','A',NULL,NULL,NULL,NULL };
+	unsigned char ReplyCmd[100];
+
+	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+
+	SendCmd[8] = get_low8(cs);
+	SendCmd[9] = (cs >> 8);
+
+	write((char *)SendCmd, COUNTOF(SendCmd));
+
+	//disp(SendCmd, 8);
+
+	Sleep(waitTime);
+
+	read((char *)ReplyCmd, 100, true);
+	//disp(ReplyCmd, 7);
+
+	unsigned short value;
+
+	value = ReplyCmd[2] & 0xff;
+	value = (value << 8) | (ReplyCmd[3] & 0xff);
+
+	return signed16to10(value) / 200.0;
+
+}
+
+
+int	lensDriver::SetFocalPower(double focalPower) {
+	auto crc16 = new crc16ibm();
+	unsigned char SendCmd[10] = { 'P','w', 'D', 'A',NULL,NULL,NULL,NULL };
+	//double maxCurrent = GetMaxOutputCurrent();
+	char buf[200];
+	char *endptr;
+
+	//if (abs(inputCurrent) > maxCurrent) {
+	//	std::cout << "This current value is out of range." << std::endl;
+	//	std::cout << "Please set the absolute value less than " << maxCurrent << "[mA]." << std::endl;
+	//	return -1;
+	//}
+
+	int value = focalPower * 200;
+
+	SendCmd[4] = get_high8(value);
+	SendCmd[5] = get_low8(value);
+	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	SendCmd[8] = get_low8(cs);
+	SendCmd[9] = get_high8(cs);
+
+	write((char *)SendCmd, COUNTOF(SendCmd));
+	//disp(SendCmd, 4);
+	std::cout << "Set focal power : " << focalPower << " [D]" << std::endl;
+
+	return 0;
 
 }

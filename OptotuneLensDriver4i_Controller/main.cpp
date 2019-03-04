@@ -21,4 +21,12 @@ int main()
 	optlens.ChangeToSinusoidalSignal();
 	optlens.SetSignalGeneratorFrequency(17);
 	optlens.GetSignalGeneratorFrequency();
+
+	optlens.ChangeToFocalPowerControlledMode();
+	optlens.SetFocalPower(2.6);
+	std::cout << optlens.GetFocalPower() << std::endl;
+
+	optlens.InterpoaltionCommand(100, 30);
+
+
 }

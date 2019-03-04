@@ -12,7 +12,7 @@ int lensDriver::ChangeToSinusoidalSignal() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -36,7 +36,7 @@ int lensDriver::ChangeToRectangularSignal() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -60,7 +60,7 @@ int lensDriver::ChangeToCurrentMode() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -84,7 +84,7 @@ int lensDriver::ChangeToFocalPowerControlledMode() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -122,7 +122,7 @@ int lensDriver::ReadCurrentlyActiveMode() {
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = (cs >> 8);
 
-	write((char *)SendCmd, 5);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
@@ -177,7 +177,7 @@ int lensDriver::ChangeToAnalogMode() {
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
-	write((char *)SendCmd, 8);
+	write((char *)SendCmd, COUNTOF(SendCmd));
 
 	//disp(SendCmd, 8);
 
