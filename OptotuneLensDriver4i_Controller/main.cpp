@@ -3,6 +3,8 @@
 
 #include "pch.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 int main()
@@ -26,7 +28,17 @@ int main()
 	optlens.SetFocalPower(2.6);
 	std::cout << optlens.GetFocalPower() << std::endl;
 
-	optlens.InterpoaltionCommand(100, 30);
+	//FILE *fp1;
+	//char fname[50];
+	//sprintf_s(fname, "currentTemperatureToDioper_LUT.csv");
+	//fopen_s(&fp1,fname, "w");
+	//for (int c = -300; c < 300; c++) {
+	//	for (int t = 0; t < 60; t++) {
+	//		fprintf(fp1, "%d,%d,%f \n", c,t, optlens.InterpoaltionCommand(c, t));
+	//	}
+	//}
+	//fclose(fp1);
+	//optlens.InterpoaltionCommand(100, 30);
 
 
 }

@@ -8,11 +8,11 @@ double lensDriver::InterpoaltionCommand(double current, double temperature) {
 
 	double maxCurrent = GetMaxOutputCurrent();
 
-	if (abs(current) > maxCurrent) {
+	/*if (abs(current) > maxCurrent) {
 		std::cout << "This current value is out of range." << std::endl;
 		std::cout << "Please set the absolute value less than " << maxCurrent << "[mA]." << std::endl;
 		return -1;
-	}
+	}*/
 	int value_current = current * ((double)4095 / (double)maxCurrent);
 
 	int value_temperature = temperature * 256;
@@ -29,7 +29,7 @@ double lensDriver::InterpoaltionCommand(double current, double temperature) {
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 7);
+	//disp(ReplyCmd, 7);
 
 	unsigned short value_focalPower;
 

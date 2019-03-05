@@ -59,7 +59,22 @@ public:
 
 
 	//01-Firmware _Commands_and_Properties.cpp
-	int Handshake();
+	int		Handshake();
+	int		FirmwareType();
+	int		FirmwareBranch();
+	int		PartNumberCommand();
+	double	SetUpperSoftwareCurrentLimit(double upperCurrentLimit);
+	double	GetUpperSoftwareCurrentLimit();
+	double	SetLowerSoftwareCurrentLimit(double lowerCurrentLimit);
+	double	GetLowerSoftwareCurrentLimit();
+	int		FirmwareVersionRead();
+	int		DeviceID_Read();
+	int		DeviceID_Write(int deviceID);
+	int		SetDriftVariables();
+	int		GetDriftVariables();
+
+	//02-Error_Commands.cpp
+	int CommunicationError();
 
 	//03-Lens_Commands_and_Properties.cpp
 	int		SerialNumber();

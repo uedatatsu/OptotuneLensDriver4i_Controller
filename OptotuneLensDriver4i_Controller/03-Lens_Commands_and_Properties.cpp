@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <iostream>
-
+#include <tuple>
 
 int lensDriver::SetCurrent(double inputCurrent) {
 	auto crc16 = new crc16ibm();
@@ -283,6 +283,95 @@ double lensDriver::GetMaxOutputCurrent() {
 
 }
 
+int	lensDriver::SetTemperatureLimits(double maximumTemperature, double minimumTemperature) {
+	auto crc16 = new crc16ibm();
+
+	unsigned char SendCmd[10] = { 'P','w','T', 'A' };	//
+	unsigned char ReplyCmd[100];
+
+	if (maximumTemperature < minimumTemperature) {
+		std::cout << "This maximum temperature value is less than minimum temperature value." << std::endl;
+		std::cout << "Please set correct values." << std::endl;
+		return -1;
+	}
+	else if (maximumTemperature>=120) {
+		std::cout << "This maximum temperature value is out of range." << std::endl;
+		std::cout << "Please set the absolute value less than 120 [℃]." << std::endl;
+		return -1;
+	}
+	else if (minimumTemperature <= -120) {
+		std::cout << "This minimum temperature value is out of range." << std::endl;
+		std::cout << "Please set the absolute value more than -120 [℃]." << std::endl;
+		return -1;
+	}
+
+	int value_maximumTemperature = maximumTemperature * 16;
+	int value_minimumTemperature = minimumTemperature * 16;
+
+	SendCmd[4] = get_high8(value_maximumTemperature);
+	SendCmd[5] = get_low8(value_maximumTemperature);
+	SendCmd[6] = get_high8(value_minimumTemperature);
+	SendCmd[7] = get_low8(value_minimumTemperature);
+	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
+	SendCmd[8] = get_low8(cs);
+	SendCmd[9] = get_high8(cs);
+
+	write((char *)SendCmd, COUNTOF(SendCmd));
+	Sleep(waitTime);
+
+	read((char *)ReplyCmd, 100, true);
+	disp(ReplyCmd, 8);
+
+	unsigned short value;
+	unsigned short value_;
+
+	value = ReplyCmd[3] & 0xff;
+	value = (value << 8) | (ReplyCmd[4] & 0xff);
+	value_ = ReplyCmd[5] & 0xff;
+	value_ = (value_ << 8) | (ReplyCmd[6] & 0xff);
+
+	std::cout << "Max focal power limit : " << signed16to10(value) / 200.0 << std::endl;
+	std::cout << "Min focal power limit : " << signed16to10(value_) / 200.0 << std::endl;
+	std::cout << std::endl;
+
+	return 0;
+
+}
+
+std::tuple<double, double> lensDriver::GetTemperatureLimits() {
+
+	auto crc16 = new crc16ibm();
+
+	unsigned char SendCmd[10] = { 'P','r','T', 'A',NULL,NULL,NULL,NULL };	//
+	unsigned char ReplyCmd[100];
+
+	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
+	SendCmd[8] = get_low8(cs);
+	SendCmd[9] = get_high8(cs);
+
+	write((char *)SendCmd, COUNTOF(SendCmd));
+	Sleep(waitTime);
+
+	read((char *)ReplyCmd, 100, true);
+	disp(ReplyCmd, 8);
+
+	unsigned short value;
+	unsigned short value_;
+
+	value = ReplyCmd[3] & 0xff;
+	value = (value << 8) | (ReplyCmd[4] & 0xff);
+	value_ = ReplyCmd[5] & 0xff;
+	value_ = (value_ << 8) | (ReplyCmd[6] & 0xff);
+
+	std::cout << "Max temperature limit : " << signed16to10(value) / 16.0 << std::endl;
+	std::cout << "Min temperature limit : " << signed16to10(value_) / 16.0 << std::endl;
+	std::cout << std::endl;
+
+	return std::forward_as_tuple(signed16to10(value) / 16.0, signed16to10(value_) / 16.0);
+}
+
+
+
 double	lensDriver::GetFocalPower() {
 	auto crc16 = new crc16ibm();
 
@@ -339,5 +428,35 @@ int	lensDriver::SetFocalPower(double focalPower) {
 	std::cout << "Set focal power : " << focalPower << " [D]" << std::endl;
 
 	return 0;
+
+}
+
+
+double	lensDriver::TemperatureReading() {
+
+	auto crc16 = new crc16ibm();
+
+	unsigned char SendCmd[5] = { 'T','C','A' };	//
+	unsigned char ReplyCmd[100];
+
+	auto cs = crc16->calc_checksum(SendCmd, 3);	//右辺…dataの要素数
+
+	SendCmd[3] = get_low8(cs);
+	SendCmd[4] = (cs >> 8);
+
+	write((char *)SendCmd, COUNTOF(SendCmd));
+
+	//disp(SendCmd, 6);
+
+	Sleep(waitTime);
+
+	read((char *)ReplyCmd, 100, true);
+	//disp(ReplyCmd, 7);
+
+	unsigned short value;
+
+	value = ReplyCmd[3] & 0xff;
+	value = (value << 8) | (ReplyCmd[4] & 0xff);
+	return signed16to10(value) * 0.0625;
 
 }

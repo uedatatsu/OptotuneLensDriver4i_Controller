@@ -156,6 +156,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="02-Error_Commands.cpp" />
     <ClCompile Include="04-Operation_Mode.cpp" />
     <ClCompile Include="06-Advanced_Commands.cpp" />
     <ClCompile Include="CRC-16-IBM-Calculation.cpp" />
