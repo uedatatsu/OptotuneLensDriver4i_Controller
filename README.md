@@ -24,43 +24,43 @@ Controller for Optotune focus tunable lens driver 4i
 ### int CommunicationError();
 
 ## 03-Lens_Commands_and_Properties.cpp
-int		SerialNumber();
-int		SetCurrent(double inputCurrent);
-double	GetCurrent();
-double	GetSignalGeneratorUpperCurrentLimit();
-int		SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit);
-double	GetSignalGeneratorLowerCurrentLimit();
-int		SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit);
-double	GetSignalGeneratorFrequency();
-int		SetSignalGeneratorFrequency(double frequency);
-int		SetTemperatureLimits(double maximumTemperature, double minimumTemperature);
-std::tuple<double, double>GetTemperatureLimits();
-std::tuple<double, double>GetEEPROMTemperatureValues();
-int		SetEEPROMTemperatureValues(double firstTemperature, double secondTemperature);
-double	GetFocalPower();
-int		SetFocalPower(double focalPower);
-int		SetMaxOutputCurrent(double maxCurrent);
-double	GetMaxOutputCurrent();
-int		SetCalibrationFactor(double currentFactor);
-double	GetCalibrationFactor();
-double	TemperatureReading();
-double	GetStatus();
-double	ReadAddressFromTheEEPROM();
-int		AnalogInputReading();
-int		WriteByteToEEPROM();
-int		ReadEEPROM();
+### int		SerialNumber();
+### int		SetCurrent(double inputCurrent);
+### double	GetCurrent();
+### double	GetSignalGeneratorUpperCurrentLimit();
+### int		SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit);
+### double	GetSignalGeneratorLowerCurrentLimit();
+### int		SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit);
+### double	GetSignalGeneratorFrequency();
+### int		SetSignalGeneratorFrequency(double frequency);
+### int		SetTemperatureLimits(double maximumTemperature, double minimumTemperature);
+### std::tuple<double, double>GetTemperatureLimits();
+### std::tuple<double, double>GetEEPROMTemperatureValues();
+### int		SetEEPROMTemperatureValues(double firstTemperature, double secondTemperature);
+### double	GetFocalPower();
+### int		SetFocalPower(double focalPower);
+### int		SetMaxOutputCurrent(double maxCurrent);
+### double	GetMaxOutputCurrent();
+### int		SetCalibrationFactor(double currentFactor);
+### double	GetCalibrationFactor();
+### double	TemperatureReading();
+### double	GetStatus();
+### double	ReadAddressFromTheEEPROM();
+### int		AnalogInputReading();
+### int		WriteByteToEEPROM();
+### int		ReadEEPROM();
 
 ## 04-Operation_Mode.cpp
-int ChangeToSinusoidalSignal();
-int ChangeToRectangularSignal();
-int ChangeToCurrentMode();
-int ChangeToFocalPowerControlledMode();
-int ReadCurrentlyActiveMode();
-int ChangeToAnalogMode();
+### int ChangeToSinusoidalSignal();
+### int ChangeToRectangularSignal();
+### int ChangeToCurrentMode();
+### int ChangeToFocalPowerControlledMode();
+### int ReadCurrentlyActiveMode();
+### int ChangeToAnalogMode();
 
 ## 06-Advanced_Commands.cpp
-int GPIOToogle();
-int SetLensDriverToDFUMode();
-int Nodemonstration();
-double InterpoaltionCommand(double current, double temperature);
+### int GPIOToogle();
+### int SetLensDriverToDFUMode();
+### int Nodemonstration();
+### double InterpoaltionCommand(double current, double temperature);
 
