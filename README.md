@@ -3,9 +3,13 @@ Controller for Optotune focus tunable lens driver 4i
 
 ## 01-Firmware _Commands_and_Properties.cpp
 int		Handshake();
+
 int		FirmwareType();
+
 int		FirmwareBranch();
+
 int		PartNumberCommand();
+
 double	SetUpperSoftwareCurrentLimit(double upperCurrentLimit);
 double	GetUpperSoftwareCurrentLimit();
 double	SetLowerSoftwareCurrentLimit(double lowerCurrentLimit);
