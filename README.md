@@ -8,7 +8,7 @@ include
 - 04-Operation_Mode.cpp
 - 06-Advanced_Commands.cpp
 
-
+- lensdriver.h
 
 ## 01-Firmware _Commands_and_Properties.cpp
 ### int		Handshake();
