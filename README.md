@@ -2,7 +2,7 @@
 Controller for Optotune focus tunable lens driver 4i
 
 ## 01-Firmware _Commands_and_Properties.cpp
-int		Handshake();
+### int		Handshake();
 
 int		FirmwareType();
 
