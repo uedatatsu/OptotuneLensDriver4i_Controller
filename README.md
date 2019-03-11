@@ -1,7 +1,7 @@
 # OptotuneLensDriver4i_Controller
 Controller for Optotune focus tunable lens driver 4i
 
-##01-Firmware _Commands_and_Properties.cpp
+## 01-Firmware _Commands_and_Properties.cpp
 int		Handshake();
 int		FirmwareType();
 int		FirmwareBranch();
@@ -16,10 +16,10 @@ int		DeviceID_Write(int deviceID);
 int		SetDriftVariables();
 int		GetDriftVariables();
 
-##02-Error_Commands.cpp
+## 02-Error_Commands.cpp
 int CommunicationError();
 
-##03-Lens_Commands_and_Properties.cpp
+## 03-Lens_Commands_and_Properties.cpp
 int		SerialNumber();
 int		SetCurrent(double inputCurrent);
 double	GetCurrent();
@@ -46,7 +46,7 @@ int		AnalogInputReading();
 int		WriteByteToEEPROM();
 int		ReadEEPROM();
 
-##04-Operation_Mode.cpp
+## 04-Operation_Mode.cpp
 int ChangeToSinusoidalSignal();
 int ChangeToRectangularSignal();
 int ChangeToCurrentMode();
@@ -54,7 +54,7 @@ int ChangeToFocalPowerControlledMode();
 int ReadCurrentlyActiveMode();
 int ChangeToAnalogMode();
 
-##06-Advanced_Commands.cpp
+## 06-Advanced_Commands.cpp
 int GPIOToogle();
 int SetLensDriverToDFUMode();
 int Nodemonstration();
