@@ -2,13 +2,22 @@
 Controller for Optotune focus tunable lens driver 4i
 
 include 
-- main.cpp
-- 01-Firmware _Commands_and_Properties.cpp
-- 02-Error_Commands.cpp
-- 04-Operation_Mode.cpp
-- 06-Advanced_Commands.cpp
+- cpp file
+-- main.cpp
+-- 01-Firmware _Commands_and_Properties.cpp
+-- 02-Error_Commands.cpp
+-- 04-Operation_Mode.cpp
+-- 06-Advanced_Commands.cpp
+-- CRC-16-IBM-Calculation.cpp
+-- serial.cpp
 
-- lensdriver.h
+
+header file
+-- lensdriver.h
+-- CRC-16-IBM-Calculation.h
+-- serial.h
+
+
 
 ## 01-Firmware _Commands_and_Properties.cpp
 ### int		Handshake();
