@@ -19,6 +19,11 @@ header file
 - serial.h
 
 
+## How to use
+...
+
+
+
 
 ## 01-Firmware _Commands_and_Properties.cpp
 ### int		Handshake();
