@@ -116,7 +116,6 @@ int lensDriver::SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit) {
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
-	//std::cout << "Set Current" << std::endl;
 
 	return 0;
 }
@@ -169,7 +168,6 @@ int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
 	//disp(SendCmd, 4);
-	//std::cout << "Set Current" << std::endl;
 
 	return 0;
 }

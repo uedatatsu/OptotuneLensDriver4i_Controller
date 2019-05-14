@@ -63,15 +63,15 @@ public:
 	char	FirmwareType();
 	int		FirmwareBranch();
 	int		PartNumberCommand();
-	double	SetUpperSoftwareCurrentLimit(double upperCurrentLimit);
+	int		SetUpperSoftwareCurrentLimit(double upperCurrentLimit);
 	double	GetUpperSoftwareCurrentLimit();
-	double	SetLowerSoftwareCurrentLimit(double lowerCurrentLimit);
+	int		SetLowerSoftwareCurrentLimit(double lowerCurrentLimit);
 	double	GetLowerSoftwareCurrentLimit();
 	int		FirmwareVersionRead();
-	int		DeviceID_Read();
-	int		DeviceID_Write(int deviceID);
-	int		SetDriftVariables();
-	int		GetDriftVariables();
+	void	DeviceID_Read(unsigned char * deviceID);
+	void	DeviceID_Write(unsigned char * deviceID);
+	std::tuple<double, double, double, double, double, double, double, double, double> SetDriftVariables(double G1, double G2, double G3, double G4, double T1up, double T1down, double T2, double T3, double T4 );
+	std::tuple<double, double, double, double, double, double, double, double, double> GetDriftVariables();
 
 	//02-Error_Commands.cpp
 	int CommunicationError();
@@ -104,17 +104,17 @@ public:
 	int		ReadEEPROM();
 
 	//04-Operation_Mode.cpp
-	int ChangeToSinusoidalSignal();
-	int ChangeToRectangularSignal();
-	int ChangeToCurrentMode();
-	int ChangeToFocalPowerControlledMode();
-	int ReadCurrentlyActiveMode();
-	int ChangeToAnalogMode();
+	int		ChangeToSinusoidalSignal();
+	int		ChangeToRectangularSignal();
+	int		ChangeToCurrentMode();
+	int		ChangeToFocalPowerControlledMode();
+	int		ReadCurrentlyActiveMode();
+	int		ChangeToAnalogMode();
 
 	//06-Advanced_Commands.cpp
-	int GPIOToogle();
-	int SetLensDriverToDFUMode();
-	int Nodemonstration();
+	int		GPIOToogle();
+	int		SetLensDriverToDFUMode();
+	int		Nodemonstration();
 	double InterpoaltionCommand(double current, double temperature);
 
 };
