@@ -21,7 +21,7 @@ int main()
 	std::tie(a,b)=optlens.GetTemperatureLimits();
 	cout << a<<" "<<b << endl;
 
-	std::cout<<optlens.ReadEEPROM()<<std::endl;
+	std::cout<<optlens.Nodemonstration()<<std::endl;
 
 
 	std::cout << std:: endl;

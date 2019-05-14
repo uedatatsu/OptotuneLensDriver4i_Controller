@@ -112,7 +112,7 @@ public:
 	int		ChangeToAnalogMode();
 
 	//06-Advanced_Commands.cpp
-	int		GPIOToogle();
+	int		GPIOToogle(int toogleCommand);
 	int		SetLensDriverToDFUMode();
 	int		Nodemonstration();
 	double InterpoaltionCommand(double current, double temperature);
