@@ -6,14 +6,18 @@
 #include <fstream>
 #include <sstream>
 
+using namespace std;
 
 int main()
 {
-	int comNum = 4;
+	int comNum = 9;
 
 	lensDriver optlens(comNum,baudrate);
 
 	optlens.Handshake();
+
+	std::cout << optlens.PartNumberCommand() << std:: endl;
+
 	optlens.ChangeToCurrentMode();
 	optlens.SetCurrent(100);
 	optlens.ReadCurrentlyActiveMode();

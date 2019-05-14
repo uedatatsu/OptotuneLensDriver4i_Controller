@@ -17,20 +17,6 @@ int lensDriver::SetCurrent(double inputCurrent) {
 
 	int value = inputCurrent * ((double)4095 / (double)GetMaxOutputCurrent());
 
-	//if (inputCurrent < 0) {
-	//	value = -value;
-	//	snprintf(buf, 200, "%#x", value);
-	//	value = -strtol(buf, &endptr, 16);
-	//	printf("%s--------------\n", buf);
-
-	//}
-	//else {
-	//	snprintf(buf, 200, "%#x", value);
-	//	//printf("%s--------------\n", buf);
-	//	value = strtol(buf, NULL, 16);
-
-	//}
-
 	SendCmd[2] = get_high8(value);
 	SendCmd[3] = get_low8(value);
 	auto cs = crc16->calc_checksum(SendCmd, 4);	//‰E•Ócdata‚Ì—v‘f”
@@ -38,7 +24,6 @@ int lensDriver::SetCurrent(double inputCurrent) {
 	SendCmd[5] = get_high8(cs);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-	//disp(SendCmd, 4);
 	std::cout << "Set Current : " << inputCurrent << " [mA]" << std::endl;
 
 	return 0;
@@ -208,8 +193,8 @@ double lensDriver::GetSignalGeneratorFrequency() {
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
-	unsigned char org_str[] = { ReplyCmd[3] , ReplyCmd[4], ReplyCmd[5], ReplyCmd[6] };
-	std::string str(org_str,std::end(org_str));
+	//unsigned char org_str[] = { ReplyCmd[3] , ReplyCmd[4], ReplyCmd[5], ReplyCmd[6] };
+	//std::string str(org_str,std::end(org_str));
 
 	unsigned int value;
 

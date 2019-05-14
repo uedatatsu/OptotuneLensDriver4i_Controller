@@ -60,7 +60,7 @@ public:
 
 	//01-Firmware _Commands_and_Properties.cpp
 	int		Handshake();
-	int		FirmwareType();
+	char	FirmwareType();
 	int		FirmwareBranch();
 	int		PartNumberCommand();
 	double	SetUpperSoftwareCurrentLimit(double upperCurrentLimit);
