@@ -16,15 +16,15 @@ int main()
 	lensDriver optlens(comNum,baudrate);
 
 	optlens.Handshake();
-	double d1, d2, d3, d4, t1u, t1d, t2, t3, t4;
-	std::tie(d1, d2, d3, d4, t1u, t1d, t2, t3, t4) = optlens.SetDriftVariables(1,2,3,5,0.75,0.5,0.25,1.25,1.5);
-	cout << d1 <<" "<< d2 << " " << d3 << " " << d4 << " " << t1u << " " << t1d << " " << t2 << " " << t3 << " " << t4 << endl;
+	unsigned char s[8] = { 0 };
+	double a, b;
+	std::tie(a,b)=optlens.GetTemperatureLimits();
+	cout << a<<" "<<b << endl;
 
-	std::tie(d1, d2, d3, d4, t1u, t1d, t2, t3, t4) = optlens.GetDriftVariables();
-	cout << d1 << " " << d2 << " " << d3 << " " << d4 << " " << t1u << " " << t1d << " " << t2 << " " << t3 << " " << t4 << endl;
-	unsigned char a[9]="AKAA2211";
-	optlens.DeviceID_Write(a);
-	std::cout << a[3]<< std:: endl;
+	std::cout<<optlens.ReadEEPROM()<<std::endl;
+
+
+	std::cout << std:: endl;
 
 	optlens.ChangeToCurrentMode();
 	optlens.SetCurrent(100);
@@ -37,6 +37,8 @@ int main()
 	optlens.GetSignalGeneratorFrequency();
 
 	optlens.ChangeToFocalPowerControlledMode();
+	std::cout << optlens.GetStatus() << std::endl;
+
 	optlens.SetFocalPower(2.6);
 	std::cout << optlens.GetFocalPower() << std::endl;
 

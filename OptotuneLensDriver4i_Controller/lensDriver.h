@@ -74,10 +74,10 @@ public:
 	std::tuple<double, double, double, double, double, double, double, double, double> GetDriftVariables();
 
 	//02-Error_Commands.cpp
-	int CommunicationError();
+	int		CommunicationError();
 
 	//03-Lens_Commands_and_Properties.cpp
-	int		SerialNumber();
+	void	SerialNumber(unsigned char * serialNumber);
 	int		SetCurrent(double inputCurrent);
 	double	GetCurrent();
 	double	GetSignalGeneratorUpperCurrentLimit();
@@ -100,7 +100,7 @@ public:
 	double	GetStatus();
 	double	ReadAddressFromTheEEPROM();
 	int		AnalogInputReading();
-	int		WriteByteToEEPROM();
+	int		WriteByteToEEPROM(int registerID, int byteToWrite);
 	int		ReadEEPROM();
 
 	//04-Operation_Mode.cpp

@@ -319,6 +319,11 @@ void lensDriver::DeviceID_Write(unsigned char * deviceID) {
 		std::cout << deviceID[i];
 	}
 	std::cout << std::endl;
+	
+	/*
+	mainŠÖ”o—Í—á
+	std::tie(d1, d2, d3, d4, t1u, t1d, t2, t3, t4) = optlens.GetDriftVariables();
+	*/
 }
 
 std::tuple<double, double, double, double, double, double, double, double, double> lensDriver::SetDriftVariables(double G1, double G2, double G3, double G4, double T1up, double T1down, double T2, double T3, double T4) {
@@ -415,7 +420,7 @@ std::tuple<double, double, double, double, double, double, double, double, doubl
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
 
-	disp(SendCmd, COUNTOF(SendCmd));
+	//disp(SendCmd, COUNTOF(SendCmd));
 
 	Sleep(waitTime);
 
