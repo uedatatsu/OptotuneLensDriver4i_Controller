@@ -11,17 +11,14 @@ using namespace std;
 
 int main()
 {
-	int comNum = 9;
+	int comNum = 5;
 
 	lensDriver optlens(comNum,baudrate);
 
 	optlens.Handshake();
-	unsigned char s[8] = { 0 };
-	double a, b;
-	std::tie(a,b)=optlens.GetTemperatureLimits();
-	cout << a<<" "<<b << endl;
-
-	std::cout<<optlens.Nodemonstration()<<std::endl;
+	//unsigned char deviceID[]="A";
+	//optlens.SerialNumber(deviceID);
+	//std::cout<< deviceID <<std::endl;
 
 
 	std::cout << std:: endl;

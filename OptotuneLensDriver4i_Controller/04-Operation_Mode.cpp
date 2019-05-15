@@ -3,91 +3,72 @@
 
 int lensDriver::ChangeToSinusoidalSignal() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'M','w','S','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	return 0;
-
 }
 
 int lensDriver::ChangeToRectangularSignal() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'M','w','Q','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	return 0;
-
 }
 
 int lensDriver::ChangeToCurrentMode() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'M','w','D','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	return 0;
-
 }
 
 int lensDriver::ChangeToFocalPowerControlledMode() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'M','w','C','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
@@ -95,7 +76,6 @@ int lensDriver::ChangeToFocalPowerControlledMode() {
 
 	unsigned short value;
 	unsigned short value_;
-
 
 	value = ReplyCmd[4] & 0xff;
 	value = (value << 8) | (ReplyCmd[5] & 0xff);
@@ -107,25 +87,19 @@ int lensDriver::ChangeToFocalPowerControlledMode() {
 	std::cout << std::endl;
 
 	return 0;
-
 }
 
 int lensDriver::ReadCurrentlyActiveMode() {
-
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[5] = { 'M','M','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 5);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
@@ -163,29 +137,23 @@ int lensDriver::ReadCurrentlyActiveMode() {
 		break;
 	}
 	return ReplyCmd[3];
-
 }
 
 int lensDriver::ChangeToAnalogMode() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'M','w','A','A' };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	return 0;
-
 }

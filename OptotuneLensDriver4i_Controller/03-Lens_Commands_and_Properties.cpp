@@ -4,19 +4,15 @@
 
 void lensDriver::SerialNumber(unsigned char * serialNumber) {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[3] = { 'X',NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 1);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[1] = get_low8(cs);
 	SendCmd[2] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, COUNTOF(SendCmd));
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
@@ -48,46 +44,38 @@ int lensDriver::SetCurrent(double inputCurrent) {
 
 	SendCmd[2] = get_high8(value);
 	SendCmd[3] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = get_high8(cs);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-	std::cout << "Set Current : " << inputCurrent << " [mA]" << std::endl;
+	std::cout << "Set current : " << inputCurrent << " [mA]" << std::endl;
 
 	return 0;
 }
 
 
 double lensDriver::GetCurrent() {
-
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'A','r',NULL,NULL };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 6);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[1] & 0xff;
-	std::cout << "adfa" << value << std::endl;
-
 	value = (value << 8) | (ReplyCmd[2] & 0xff);
 
-	std::cout << "adfa"<<value << std::endl;
+	std::cout << "Get current : "<< signed16to10(value) * (GetMaxOutputCurrent() / (double)4095) << " [mA]" << std::endl;
 
 	return signed16to10(value) * (GetMaxOutputCurrent() / (double)4095);
 }
@@ -95,31 +83,25 @@ double lensDriver::GetCurrent() {
 
 double lensDriver::GetSignalGeneratorUpperCurrentLimit() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','r','U','A',NULL,NULL,NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[2] & 0xff;
 	value = (value << 8) | (ReplyCmd[3] & 0xff);
 
 	return signed16to10(value) * (GetMaxOutputCurrent() / (double)4095);
-
 }
 
 
@@ -139,7 +121,7 @@ int lensDriver::SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit) {
 
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -151,31 +133,27 @@ int lensDriver::SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit) {
 
 double lensDriver::GetSignalGeneratorLowerCurrentLimit() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','r','L','A',NULL,NULL,NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[2] & 0xff;
 	value = (value << 8) | (ReplyCmd[3] & 0xff);
 
 	return signed16to10(value) * (GetMaxOutputCurrent() / (double)4095);
 }
+
 int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 	auto crc16 = new crc16ibm();
 	unsigned char SendCmd[10] = { 'P','r','L','A',NULL,NULL,NULL,NULL };
@@ -191,7 +169,7 @@ int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -202,26 +180,19 @@ int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 }
 double lensDriver::GetSignalGeneratorFrequency() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','r','F','A',NULL,NULL,NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
-
-	//unsigned char org_str[] = { ReplyCmd[3] , ReplyCmd[4], ReplyCmd[5], ReplyCmd[6] };
-	//std::string str(org_str,std::end(org_str));
 
 	unsigned int value;
 
@@ -254,7 +225,7 @@ int lensDriver::SetSignalGeneratorFrequency(double frequency) {
 	SendCmd[6] = (value >> 8) & 0xff;
 	SendCmd[5] = (value >> 16) & 0xff;
 	SendCmd[4] = (value >> 24);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -269,7 +240,6 @@ int lensDriver::SetSignalGeneratorFrequency(double frequency) {
 
 int	lensDriver::SetTemperatureLimits(double maximumTemperature, double minimumTemperature) {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','w','T', 'A' };	//
 	unsigned char ReplyCmd[100];
 
@@ -296,7 +266,7 @@ int	lensDriver::SetTemperatureLimits(double maximumTemperature, double minimumTe
 	SendCmd[5] = get_low8(value_maximumTemperature);
 	SendCmd[6] = get_high8(value_minimumTemperature);
 	SendCmd[7] = get_low8(value_minimumTemperature);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -325,13 +295,11 @@ int	lensDriver::SetTemperatureLimits(double maximumTemperature, double minimumTe
 }
 
 std::tuple<double, double> lensDriver::GetTemperatureLimits() {
-
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','r', 'T', 'A',NULL,NULL,NULL,NULL };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -361,11 +329,10 @@ std::tuple<double, double> lensDriver::GetTemperatureLimits() {
 
 std::tuple<double, double>lensDriver::GetEEPROMTemperatureValues() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P', 'r', 'O', 'A',NULL,NULL,NULL,NULL };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -395,7 +362,6 @@ std::tuple<double, double>lensDriver::GetEEPROMTemperatureValues() {
 
 int	lensDriver::SetEEPROMTemperatureValues(double firstTemperature, double secondTemperature) {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P', 'r', 'T', 'A',NULL,NULL,NULL,NULL };	//
 	unsigned char ReplyCmd[100];
 
@@ -406,7 +372,7 @@ int	lensDriver::SetEEPROMTemperatureValues(double firstTemperature, double secon
 	SendCmd[5] = get_low8(value_firstTemperature);
 	SendCmd[6] = get_high8(value_secondTemperature);
 	SendCmd[7] = get_low8(value_secondTemperature);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -419,31 +385,26 @@ int	lensDriver::SetEEPROMTemperatureValues(double firstTemperature, double secon
 
 double	lensDriver::GetFocalPower() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[10] = { 'P','r','D','A',NULL,NULL,NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[2] & 0xff;
 	value = (value << 8) | (ReplyCmd[3] & 0xff);
 
 	return signed16to10(value) / 200.0;
-
 }
 
 
@@ -454,17 +415,11 @@ int	lensDriver::SetFocalPower(double focalPower) {
 	char buf[200];
 	char *endptr;
 
-	//if (abs(inputCurrent) > maxCurrent) {
-	//	std::cout << "This current value is out of range." << std::endl;
-	//	std::cout << "Please set the absolute value less than " << maxCurrent << "[mA]." << std::endl;
-	//	return -1;
-	//}
-
 	int value = focalPower * 200;
 
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 8);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[8] = get_low8(cs);
 	SendCmd[9] = get_high8(cs);
 
@@ -485,7 +440,7 @@ int	lensDriver::SetMaxOutputCurrent(double maxCurrent) {
 
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 6);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[6] = get_low8(cs);
 	SendCmd[7] = get_high8(cs);
 
@@ -504,33 +459,26 @@ int	lensDriver::SetMaxOutputCurrent(double maxCurrent) {
 }
 
 double lensDriver::GetMaxOutputCurrent() {
-
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[8] = { 'C','r','M','A',NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 6);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[3] & 0xff;
 	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
 	return value / 100.0;
-
 }
 
 int	lensDriver::SetCalibrationFactor(double currentFactor) {
@@ -542,7 +490,7 @@ int	lensDriver::SetCalibrationFactor(double currentFactor) {
 
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
-	auto cs = crc16->calc_checksum(SendCmd, 6);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[6] = get_low8(cs);
 	SendCmd[7] = get_high8(cs);
 
@@ -553,7 +501,6 @@ int	lensDriver::SetCalibrationFactor(double currentFactor) {
 	//disp(ReplyCmd, 7);
 
 	unsigned short value_;
-
 	value_ = ReplyCmd[3] & 0xff;
 	value_ = (value_ << 8) | (ReplyCmd[4] & 0xff);
 
@@ -562,26 +509,21 @@ int	lensDriver::SetCalibrationFactor(double currentFactor) {
 
 double lensDriver::GetCalibrationFactor() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[8] = { 'C','r','C','A',NULL,NULL };
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 6);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 8);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[3] & 0xff;
 	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
@@ -590,47 +532,40 @@ double lensDriver::GetCalibrationFactor() {
 
 
 double	lensDriver::TemperatureReading() {
-
 	auto crc16 = new crc16ibm();
 
 	unsigned char SendCmd[5] = { 'T','C','A' };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 3);	//右辺…dataの要素数
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, 6);
-
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[3] & 0xff;
 	value = (value << 8) | (ReplyCmd[4] & 0xff);
+	
 	return signed16to10(value) * 0.0625;
-
 }
 
 double	lensDriver::GetStatus() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[4] = { 'S','r' };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 2);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[2] = get_low8(cs);
 	SendCmd[3] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
 	//disp(SendCmd, COUNTOF(SendCmd));
 
 	Sleep(waitTime);
@@ -658,62 +593,51 @@ double	lensDriver::GetStatus() {
 	//Status Byte #4
 	if (signed16to10(ReplyCmd[1] & 0x01) == 1)std::cout;
 
+	//Other
 	if (signed16to10(ReplyCmd[4]) == 0 && signed16to10(ReplyCmd[3]) == 0 && signed16to10(ReplyCmd[2]) == 0 && signed16to10(ReplyCmd[1]) == 0)std::cout << "No problem." << std::endl;
-
 
 	return 0;
 }
 
 double	lensDriver::ReadAddressFromTheEEPROM() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[5] = { 'Z','r','\n' };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 3);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
-	disp(SendCmd, 6);
-
+	//disp(SendCmd, 6);
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
 	disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[1] & 0xff;
 	
 	return signed16to10(value) ;
-
 }
 
 int	lensDriver::AnalogInputReading() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[5] = { 'G','A','A' };	//
 	unsigned char ReplyCmd[100];
 
-	auto cs = crc16->calc_checksum(SendCmd, 3);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = (cs >> 8);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
-	disp(SendCmd, 6);
-
+	//disp(SendCmd, 6);
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 7);
+	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[3] & 0xff;
 	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
@@ -721,31 +645,25 @@ int	lensDriver::AnalogInputReading() {
 }
 
 int	lensDriver::WriteByteToEEPROM(int registerID, int byteToWrite){
-
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[6] = { 'Z', 'w'};	//
 	unsigned char ReplyCmd[100];
 	
 	SendCmd[2] = get_low8(registerID);
 	SendCmd[3] = get_low8(byteToWrite);
 
-	auto cs = crc16->calc_checksum(SendCmd, 4);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[4] = get_low8(cs);
 	SendCmd[5] = get_high8(cs);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
-	disp(SendCmd, 6);
-
+	//disp(SendCmd, 6);
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 7);
+	//disp(ReplyCmd, 7);
 
 	unsigned short value;
-
 	value = ReplyCmd[1] & 0xff;
 
 	return signed16to10(value);
@@ -753,31 +671,25 @@ int	lensDriver::WriteByteToEEPROM(int registerID, int byteToWrite){
 
 int	lensDriver::ReadEEPROM() {
 	auto crc16 = new crc16ibm();
-
 	unsigned char SendCmd[5] = { 'D', NULL,NULL };	//
 	unsigned char ReplyCmd[100] = { 0 };
 
-	auto cs = crc16->calc_checksum(SendCmd, 3);	//右辺…dataの要素数
-
+	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
 	SendCmd[3] = get_low8(cs);
 	SendCmd[4] = get_high8(cs);
 
 	write((char *)SendCmd, COUNTOF(SendCmd));
-
-	disp(SendCmd, 6);
-
+	//disp(SendCmd, 6);
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 100);
+	//disp(ReplyCmd, 100);
 
 	unsigned short value;
-
 	value = ReplyCmd[1] & 0xff;
 
 	return signed16to10(value);
 	//返答コマンドが不整合の恐れあり、要検証
-
 }
 
 
