@@ -16,6 +16,25 @@ int main()
 	lensDriver optlens(comNum,baudrate);
 
 	optlens.Handshake();
+
+	/*----------- EEPROMが使用可能か -------------*/
+	std::vector<std::vector<double>>mat(60, std::vector<double>(600));		//FTLデータシート読み込み用
+	int status = optlens.GetStatus();			//FTLの状態確認（EEPROMが使用可能か）
+	if (status == 2) {			//EEPROMが使用可能でない場合、レンズドライバの電流制御モードを使用
+		diopterTemperatureToCurrent_init(mat);			//FTLデータシート読み込み
+		optlens.ChangeToCurrentMode();
+	}
+	if (status == 0) {								//EEPROMが使用可能である場合、レンズドライバのジオプトリ制御モードを使用
+		optlens.ChangeToFocalPowerControlledMode();
+	}
+
+	// ジオプトリ設定はこのように行う
+	//{
+	//	current = diopterTemperatureToCurrent(mat, diopter, optlens.TemperatureReading());
+	//	optlens.SetCurrent(current); 
+	//}
+	/*--------------------------------------------*/
+
 	//unsigned char deviceID[]="A";
 	//optlens.SerialNumber(deviceID);
 	//std::cout<< deviceID <<std::endl;
