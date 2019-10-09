@@ -12,5 +12,6 @@
 // TODO: ここでプリコンパイルするヘッダーを追加します
 #include "CRC-16-IBM-Calculation.h"
 #include "lensDriver.h"
-//#include <cstdint>
+#include "noEEPROMfunction.h"
+
 #endif //PCH_H

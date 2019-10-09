@@ -27,6 +27,9 @@
     <ClInclude Include="CRC-16-IBM-Calculation.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="noEEPROMfunction.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="06-Advanced_Commands.cpp">
       <Filter>ソース ファイル\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="noEEPROMfunction.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
