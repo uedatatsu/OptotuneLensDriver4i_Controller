@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-	int comNum = 9;
+	int comNum = 4;
 
 	lensDriver optlens(comNum,baudrate);
 
@@ -21,36 +21,42 @@ int main()
 	//std::cout<< deviceID <<std::endl;
 
 
-	std::cout << std:: endl;
+	//std::cout << std:: endl;
 
-	optlens.ChangeToCurrentMode();
-	optlens.SetCurrent(100);
-	optlens.ReadCurrentlyActiveMode();
-	std::cout<<"Current: "<<optlens.GetCurrent()<<std::endl;
-	//optlens.getCurrent();
-	std::cout << optlens.GetMaxOutputCurrent() << std::endl;
-	optlens.ChangeToSinusoidalSignal();
-	optlens.SetSignalGeneratorFrequency(17);
-	optlens.GetSignalGeneratorFrequency();
+	//optlens.ChangeToCurrentMode();
+	//optlens.SetCurrent(100);
+	//optlens.ReadCurrentlyActiveMode();
+	//std::cout<<"Current: "<<optlens.GetCurrent()<<std::endl;
+	////optlens.getCurrent();
+	//std::cout << optlens.GetMaxOutputCurrent() << std::endl;
+	
+	optlens.ChangeToRectangularSignal();
+	optlens.SetSignalGeneratorFrequency(2.5);
+	//optlens.GetSignalGeneratorFrequency();
+	
+	optlens.SetSignalGeneratorUpperCurrentLimit(100);
+	optlens.SetSignalGeneratorLowerCurrentLimit(-100);
+	Sleep(5000);
 
-	optlens.ChangeToFocalPowerControlledMode();
-	std::cout << optlens.GetStatus() << std::endl;
 
-	optlens.SetFocalPower(2.6);
-	std::cout << optlens.GetFocalPower() << std::endl;
+	//optlens.ChangeToFocalPowerControlledMode();
+	//std::cout << optlens.GetStatus() << std::endl;
 
-	FILE *fp1;
-	char fname[50];
-	sprintf_s(fname, "currentTemperatureToDioper_LUT_.csv");
-	fopen_s(&fp1,fname, "w");
-	int c = 3;
-	//for (int c = -300; c < 300; c++) {
-		for (int t = 0; t < 60; t++) {
-			fprintf(fp1, "%d,%d,%f \n", c,t, optlens.InterpoaltionCommand(c, t));
-		}
-	//}
-	fclose(fp1);
-	//optlens.InterpoaltionCommand(100, 30);
+	//optlens.SetFocalPower(2.6);
+	//std::cout << optlens.GetFocalPower() << std::endl;
+
+	//FILE *fp1;
+	//char fname[50];
+	//sprintf_s(fname, "currentTemperatureToDioper_LUT_.csv");
+	//fopen_s(&fp1,fname, "w");
+	//int c = 3;
+	////for (int c = -300; c < 300; c++) {
+	//	for (int t = 0; t < 60; t++) {
+	//		fprintf(fp1, "%d,%d,%f \n", c,t, optlens.InterpoaltionCommand(c, t));
+	//	}
+	////}
+	//fclose(fp1);
+	////optlens.InterpoaltionCommand(100, 30);
 
 
 }
