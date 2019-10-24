@@ -95,11 +95,11 @@ double lensDriver::GetSignalGeneratorUpperCurrentLimit() {
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	//disp(ReplyCmd, 7);
+	disp(ReplyCmd, 7);
 
 	unsigned short value;
-	value = ReplyCmd[2] & 0xff;
-	value = (value << 8) | (ReplyCmd[3] & 0xff);
+	value = ReplyCmd[3] & 0xff;
+	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
 	return signed16to10(value) * (GetMaxOutputCurrent() / (double)4095);
 }
@@ -108,17 +108,17 @@ double lensDriver::GetSignalGeneratorUpperCurrentLimit() {
 
 int lensDriver::SetSignalGeneratorUpperCurrentLimit(double upperSwingLimit) {
 	auto crc16 = new crc16ibm();
-	unsigned char SendCmd[10] = { 'P','r','U','A',NULL,NULL,NULL,NULL };
+	unsigned char SendCmd[10] = { 'P','w','U','A',NULL,NULL,NULL,NULL };
 	double maxCurrent = GetMaxOutputCurrent();
-
+	std::cout << "adas"<<GetMaxOutputCurrent() << std::endl;
 	if (abs(upperSwingLimit) > maxCurrent) {
 		std::cout << "This current value is out of range." << std::endl;
 		std::cout << "Please set the absolute value less than " << maxCurrent << "[mA]." << std::endl;
 		return -1;
 	}
-
+	//std::cout << GetMaxOutputCurrent() << std::endl;
 	int value = upperSwingLimit * ((double)4095 / (double)GetMaxOutputCurrent());
-
+	//std::cout << GetMaxOutputCurrent() << std::endl;
 	SendCmd[4] = get_high8(value);
 	SendCmd[5] = get_low8(value);
 	auto cs = crc16->calc_checksum(SendCmd, COUNTOF(SendCmd) - 2);
@@ -145,23 +145,23 @@ double lensDriver::GetSignalGeneratorLowerCurrentLimit() {
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	//disp(ReplyCmd, 7);
+	disp(ReplyCmd, 7);
 
 	unsigned short value;
-	value = ReplyCmd[2] & 0xff;
-	value = (value << 8) | (ReplyCmd[3] & 0xff);
+	value = ReplyCmd[3] & 0xff;
+	value = (value << 8) | (ReplyCmd[4] & 0xff);
 
 	return signed16to10(value) * (GetMaxOutputCurrent() / (double)4095);
 }
 
 int lensDriver::SetSignalGeneratorLowerCurrentLimit(double lowerSwingLimit) {
 	auto crc16 = new crc16ibm();
-	unsigned char SendCmd[10] = { 'P','r','L','A',NULL,NULL,NULL,NULL };
+	unsigned char SendCmd[10] = { 'P','w','L','A',NULL,NULL,NULL,NULL };
 	double maxCurrent = GetMaxOutputCurrent();
-
+	std::cout << "low" << GetMaxOutputCurrent() << std::endl;
 	if (abs(lowerSwingLimit) > maxCurrent) {
 		std::cout << "This current value is out of range." << std::endl;
-		std::cout << "Please set the absolute value less than " << maxCurrent << "[mA]." << std::endl;
+		std::cout << "Please set the absolute value less than a" << maxCurrent << "[mA]." << std::endl;
 		return -1;
 	}
 
