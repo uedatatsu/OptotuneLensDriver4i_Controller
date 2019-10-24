@@ -47,7 +47,6 @@ int main()
 	optlens.ReadCurrentlyActiveMode();
 	std::cout<<"Current: "<<optlens.GetCurrent()<<std::endl;
 	////optlens.getCurrent();
-	std::cout << optlens.GetMaxOutputCurrent() << std::endl;
 	
 	optlens.ChangeToRectangularSignal();
 	optlens.SetSignalGeneratorFrequency(2);
@@ -55,8 +54,8 @@ int main()
 	
 	optlens.SetSignalGeneratorUpperCurrentLimit(19);
 	optlens.SetSignalGeneratorLowerCurrentLimit(-50);
-	std::cout << optlens.GetSignalGeneratorUpperCurrentLimit() << std::endl;
-	std::cout << optlens.GetSignalGeneratorLowerCurrentLimit() << std::endl;
+	std::cout << "GetSignalGeneratorUpperCurrentLimit : " << optlens.GetSignalGeneratorUpperCurrentLimit() << std::endl;
+	std::cout << "GetSignalGeneratorLowerCurrentLimit : " << optlens.GetSignalGeneratorLowerCurrentLimit() << std::endl;
 
 	Sleep(5000);
 

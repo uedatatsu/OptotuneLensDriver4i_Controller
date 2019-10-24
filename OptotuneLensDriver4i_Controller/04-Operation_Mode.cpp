@@ -72,7 +72,7 @@ int lensDriver::ChangeToFocalPowerControlledMode() {
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 8);
+	//disp(ReplyCmd, 8);
 
 	unsigned short value;
 	unsigned short value_;
@@ -103,7 +103,7 @@ int lensDriver::ReadCurrentlyActiveMode() {
 	Sleep(waitTime);
 
 	read((char *)ReplyCmd, 100, true);
-	disp(ReplyCmd, 8);
+	//disp(ReplyCmd, 8);
 
 	/*Current Mode = 1
 	- Sinusoidal Signal Mode = 2
