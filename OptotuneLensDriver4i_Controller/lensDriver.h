@@ -115,7 +115,7 @@ public:
 	int		GPIOToogle(int toogleCommand);
 	int		SetLensDriverToDFUMode();
 	int		Nodemonstration();
-	double InterpoaltionCommand(double current, double temperature);
+	double InterpolationCommand(double current, double temperature);
 
 };
 

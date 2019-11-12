@@ -50,7 +50,7 @@ int	lensDriver::Nodemonstration() {
 
 
 
-double lensDriver::InterpoaltionCommand(double current, double temperature) {
+double lensDriver::InterpolationCommand(double current, double temperature) {
 	auto crc16 = new crc16ibm();
 	unsigned char SendCmd[7] = { 'Y' };
 	unsigned char ReplyCmd[100];
